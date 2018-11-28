@@ -1,0 +1,245 @@
+Table: alipay
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ ID            | VARCHAR(48)  | NO   | PRI |         |         
+ ALIPAY_PAY_ID | VARCHAR(45)  | YES  |     |         |         
+ AMOUNT        | BIGINT(19)   | NO   |     |         |         
+ CREATED       | DATETIME(19) | NO   |     |         |         
+ COMPLETE      | BIT(1)       | NO   |     |         |         
+ LOG_ID        | VARCHAR(48)  | NO   |     |         |         
+ PAYDATE       | DATETIME(19) | YES  |     |         |         
+ PRE_AMOUNT    | BIGINT(19)   | NO   |     |         |         
+ TRADENO       | VARCHAR(45)  | YES  |     |         |         
+ PHONE         | VARCHAR(20)  | YES  |     |         |         
+---------------+--------------+------+-----+---------+---------
+
+Table: alipay_bindaccount
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ ID           | VARCHAR(48)  | NO   | PRI |         |         
+ ALIPAY       | VARCHAR(45)  | YES  |     |         |         
+ OPENID       | VARCHAR(45)  | NO   |     |         |         
+ CREATED      | DATETIME(19) | NO   |     |         |         
+ ENABLED      | BIT(1)       | NO   |     |         |         
+ ALIPAY_IMAGE | VARCHAR(200) | YES  |     |         |         
+ SOURCE       | VARCHAR(200) | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: bindaccount
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ ID       | VARCHAR(48)  | NO   | PRI |         |         
+ QQ       | VARCHAR(45)  | YES  |     |         |         
+ OPENID   | VARCHAR(45)  | NO   |     |         |         
+ CREATED  | DATETIME(19) | NO   |     |         |         
+ ENABLED  | BIT(1)       | NO   |     |         |         
+ QQ_IMAGE | VARCHAR(200) | YES  |     |         |         
+----------+--------------+------+-----+---------+---------
+
+Table: carpark
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ ID         | VARCHAR(48)  | NO   | PRI |         |         
+ CODE       | VARCHAR(200) | NO   |     |         |         
+ NAME       | VARCHAR(255) | NO   |     |         |         
+ UPDATEDATE | DATETIME(19) | NO   |     |         |         
+------------+--------------+------+-----+---------+---------
+
+Table: longrentpay
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ ID           | VARCHAR(48)  | NO   | PRI |         |         
+ PRODUCT_ID   | VARCHAR(48)  | NO   |     |         |         
+ PARK_NAME    | VARCHAR(255) | NO   |     |         |         
+ PARK_CODE    | VARCHAR(255) | NO   |     |         |         
+ LPN          | VARCHAR(48)  | NO   |     |         |         
+ PHONE        | VARCHAR(45)  | YES  |     |         |         
+ OPENID       | VARCHAR(45)  | NO   |     |         |         
+ PTYPE        | INT(10)      | NO   |     |         |         
+ BEGINDATE    | DATETIME(19) | NO   |     |         |         
+ ENDDATE      | DATETIME(19) | NO   |     |         |         
+ AMOUNT       | BIGINT(19)   | NO   |     |         |         
+ PAY_COMPLETE | BIT(1)       | NO   |     |         |         
+ PAY_DATE     | DATETIME(19) | YES  |     |         |         
+ CREATE_DATE  | DATETIME(19) | NO   |     |         |         
+ TRAN_ID      | VARCHAR(48)  | YES  |     |         |         
+ COUPONID     | VARCHAR(180) | YES  |     |         |         
+ COUPONAMOUNT | BIGINT(19)   | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: lpn
+------------------------+--------------+------+-----+---------+---------
+ Field                  | Type         | Null | Key | Default | Remarks 
+------------------------+--------------+------+-----+---------+---------
+ LPN                    | VARCHAR(100) | NO   | PRI |         |         
+ CREATED                | DATETIME(19) | NO   |     |         |         
+ QQ_BINDACCOUNT_ID      | VARCHAR(48)  | YES  |     |         |         
+ ENABLED                | BIT(1)       | NO   |     |         |         
+ WEICHAT_BINDACCOUNT_ID | VARCHAR(48)  | YES  |     |         |         
+ ALIPAY_BINDACCOUNT_ID  | VARCHAR(48)  | YES  |     |         |         
+ CARTYPE                | INT(10)      | YES  |     |         |         
+ PHONE                  | VARCHAR(32)  | YES  |     |         |         
+------------------------+--------------+------+-----+---------+---------
+
+Table: park_qrcode
+----------+--------------+------+-----+---------+---------
+ Field    | Type         | Null | Key | Default | Remarks 
+----------+--------------+------+-----+---------+---------
+ ID       | VARCHAR(48)  | NO   | PRI |         |         
+ DESC     | VARCHAR(500) | YES  |     |         |         
+ SCENE_ID | INT(10)      | NO   |     |         |         
+ PARKID   | VARCHAR(255) | NO   |     |         | 停车场二维码信息
+ PARKNAME | VARCHAR(255) | NO   |     |         |         
+----------+--------------+------+-----+---------+---------
+
+Table: parklog
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ ID            | VARCHAR(48)  | NO   | PRI |         |         
+ ORDERFORM_ID  | VARCHAR(100) | NO   |     |         |         
+ LPN           | VARCHAR(100) | NO   |     |         |         
+ JOINDATE      | DATETIME(19) | NO   |     |         |         
+ PARKTIME      | BIGINT(19)   | NO   |     |         |         
+ PAYDATE       | DATETIME(19) | YES  |     |         |         
+ PAYAMOUNT     | BIGINT(19)   | NO   |     |         |         
+ PARKID        | VARCHAR(100) | NO   |     |         |         
+ PARKNAME      | VARCHAR(255) | YES  |     |         |         
+ SUB_PARKNAME  | VARCHAR(255) | YES  |     |         |         
+ PARK_LOACTION | VARCHAR(255) | YES  |     |         |         
+ COMPLETE      | BIT(1)       | NO   |     |         |         
+ ACTUALAMOUNT  | BIGINT(19)   | NO   |     |         |         
+ QQPAY         | INT(10)      | NO   |     |         |         
+ QQPAY_ID      | VARCHAR(45)  | YES  |     |         |         
+ WEICHATPAY    | BIT(1)       | NO   |     |         |         
+ WEICHATPAY_ID | VARCHAR(45)  | YES  |     |         |         
+ PAY_OPENID    | VARCHAR(45)  | YES  |     |         |         
+ ALIPAY        | BIT(1)       | NO   |     |         |         
+ ALIPAY_ID     | VARCHAR(45)  | YES  |     |         |         
+ COUPON_ID     | VARCHAR(255) | YES  |     |         |         
+ COUPONLAMOUNT | BIGINT(19)   | NO   |     |         |         
+---------------+--------------+------+-----+---------+---------
+
+Table: qqpay
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ ID         | VARCHAR(48)  | NO   | PRI |         |         
+ QQ_PAY_ID  | VARCHAR(45)  | YES  |     |         |         
+ AMOUNT     | BIGINT(19)   | NO   |     |         |         
+ CREATED    | DATETIME(19) | NO   |     |         |         
+ COMPLETE   | BIT(1)       | NO   |     |         |         
+ LOG_ID     | VARCHAR(48)  | NO   |     |         |         
+ PAYDATE    | DATETIME(19) | YES  |     |         |         
+ PRE_AMOUNT | BIGINT(19)   | NO   |     |         |         
+ PREPAY_ID  | VARCHAR(48)  | NO   |     |         |         
+------------+--------------+------+-----+---------+---------
+
+Table: rechargepay
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ ID           | VARCHAR(48)  | NO   | PRI |         |         
+ PRODUCT_ID   | VARCHAR(48)  | NO   |     |         |         
+ PHONE        | VARCHAR(45)  | NO   |     |         |         
+ OPENID       | VARCHAR(45)  | NO   |     |         |         
+ PTYPE        | INT(10)      | NO   |     |         |         
+ AMOUNT       | BIGINT(19)   | NO   |     |         |         
+ PAY_COMPLETE | BIT(1)       | NO   |     |         |         
+ PAY_DATE     | DATETIME(19) | YES  |     |         |         
+ CREATE_DATE  | DATETIME(19) | NO   |     |         |         
+ TRAN_ID      | VARCHAR(48)  | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: staggeringpay
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ ID           | VARCHAR(48)  | NO   | PRI |         |         
+ PRODUCT_ID   | VARCHAR(48)  | NO   |     |         |         
+ LPN          | VARCHAR(48)  | NO   |     |         |         
+ PRODUCT_NAME | VARCHAR(48)  | NO   |     |         |         
+ PARK_NAME    | VARCHAR(255) | NO   |     |         |         
+ DATEINFO     | VARCHAR(255) | NO   |     |         |         
+ BEGINDATE    | DATETIME(19) | NO   |     |         |         
+ ENDDATE      | DATETIME(19) | NO   |     |         |         
+ AMOUNT       | BIGINT(19)   | NO   |     |         |         
+ PAY_COMPLETE | BIT(1)       | NO   |     |         |         
+ OPENID       | VARCHAR(45)  | NO   |     |         |         
+ PAY_DATE     | DATETIME(19) | YES  |     |         |         
+ CREATE_DATE  | DATETIME(19) | NO   |     |         |         
+ PTYPE        | INT(10)      | NO   |     |         |         
+ TRAN_ID      | VARCHAR(48)  | YES  |     |         |         
+ PHONE        | VARCHAR(13)  | NO   |     |         |         
+ WEEKINFO     | VARCHAR(45)  | YES  |     |         | [2.0平台新增字段]错峰可用星期
+ PARKADDRESS  | VARCHAR(255) | YES  |     |         | [2.0平台新增字段]停车场地址
+ PARKPOSITION | VARCHAR(255) | YES  |     |         | [2.0平台新增字段]错峰停放位置
+ COUPONID     | VARCHAR(255) | YES  |     |         |         
+ COUPONAMOUNT | BIGINT(19)   | YES  |     |         |         
+ USERID       | VARCHAR(45)  | YES  |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: user
+------------------------+--------------+------+-----+---------+---------
+ Field                  | Type         | Null | Key | Default | Remarks 
+------------------------+--------------+------+-----+---------+---------
+ PHONE                  | VARCHAR(13)  | NO   | PRI |         |         
+ PWD                    | VARCHAR(45)  | YES  |     |         |         
+ CREATED                | DATETIME(19) | NO   |     |         |         
+ QQ_BINDACCOUNT_ID      | VARCHAR(48)  | YES  |     |         |         
+ ENABLED                | BIT(1)       | NO   |     |         |         
+ WEICHAT_BINDACCOUNT_ID | VARCHAR(48)  | YES  |     |         |         
+ ALIPAY_BINDACCOUNT_ID  | VARCHAR(48)  | YES  |     |         |         
+------------------------+--------------+------+-----+---------+---------
+
+Table: weichat_bindaccount
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ ID            | VARCHAR(48)  | NO   | PRI |         |         
+ WEICHAT       | VARCHAR(45)  | YES  |     |         |         
+ OPENID        | VARCHAR(45)  | NO   |     |         |         
+ CREATED       | DATETIME(19) | NO   |     |         |         
+ ENABLED       | BIT(1)       | NO   |     |         |         
+ WEICHAT_IMAGE | VARCHAR(300) | YES  |     |         |         
+ SOURCE        | VARCHAR(200) | YES  |     |         |         
+---------------+--------------+------+-----+---------+---------
+
+Table: weichatpay
+----------------+--------------+------+-----+---------+---------
+ Field          | Type         | Null | Key | Default | Remarks 
+----------------+--------------+------+-----+---------+---------
+ ID             | VARCHAR(48)  | NO   | PRI |         |         
+ WEICHAT_PAY_ID | VARCHAR(45)  | YES  |     |         |         
+ AMOUNT         | BIGINT(19)   | NO   |     |         |         
+ CREATED        | DATETIME(19) | NO   |     |         |         
+ COMPLETE       | BIT(1)       | NO   |     |         |         
+ LOG_ID         | VARCHAR(48)  | NO   |     |         |         
+ PAYDATE        | DATETIME(19) | YES  |     |         |         
+ PRE_AMOUNT     | BIGINT(19)   | NO   |     |         |         
+ PREPAY_ID      | VARCHAR(48)  | NO   |     |         |         
+ PAY_OPENID     | VARCHAR(45)  | YES  |     |         |         
+ PHONE          | VARCHAR(20)  | YES  |     |         |         
+----------------+--------------+------+-----+---------+---------
+
+Table: wosaipay
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ ID         | VARCHAR(48)  | NO   | PRI |         |         
+ PAYDATE    | DATETIME(19) | YES  |     |         |         
+ CREATED    | DATETIME(19) | NO   |     |         |         
+ COMPLETE   | BIT(1)       | NO   |     |         |         
+ PRE_AMOUNT | BIGINT(19)   | NO   |     |         |         
+ AMOUNT     | BIGINT(19)   | NO   |     |         |         
+ LOG_ID     | VARCHAR(48)  | NO   |     |         |         
+ TRADENO    | VARCHAR(45)  | YES  |     |         |         
+ SN         | VARCHAR(45)  | YES  |     |         |         
+ PHONE      | VARCHAR(13)  | YES  |     |         |         
+------------+--------------+------+-----+---------+---------
+

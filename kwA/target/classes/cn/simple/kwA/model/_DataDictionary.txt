@@ -1,0 +1,391 @@
+Table: city_info
+----------------+---------------+------+-----+---------+---------
+ Field          | Type          | Null | Key | Default | Remarks 
+----------------+---------------+------+-----+---------+---------
+ city_id        | INT(10)       | NO   | PRI |         | 城市Id    
+ city_name      | VARCHAR(25)   | YES  |     |         | 城市名称    
+ icon_url       | VARCHAR(100)  | YES  |     |         | 标志url   
+ background_url | VARCHAR(100)  | YES  |     |         | 背景url   
+ entry_fee      | DECIMAL(11,2) | YES  |     | 2.00    | 报名费     
+ reach_step     | INT(10)       | YES  |     | 5000    | 达标步数    
+ del_flg        | CHAR(1)       | YES  |     | 0       | 删除标志（0:未删除，1:删除）
+----------------+---------------+------+-----+---------+---------
+
+Table: game_info
+--------------+---------------+------+-----+-------------------+---------
+ Field        | Type          | Null | Key | Default           | Remarks 
+--------------+---------------+------+-----+-------------------+---------
+ id           | INT(10)       | NO   | PRI |                   | 自增id    
+ type         | CHAR(1)       | YES  |     | 0                 | 类型（0:系统、1:用户）
+ user_id      | INT(10)       | NO   |     |                   | 发起人Id   
+ nick_name    | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url     | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ titile       | VARCHAR(125)  | YES  |     |                   | 标题      
+ phase_no     | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ start_time   | VARCHAR(25)   | YES  |     |                   | 开始时间    
+ end_time     | VARCHAR(25)   | YES  |     |                   | 结束时间    
+ entry_fee    | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ reach_step   | INT(10)       | YES  |     |                   | 达标步数    
+ entry_amount | DECIMAL(11,2) | YES  |     | 0.00              | 总红包金额   
+ entry_count  | INT(10)       | YES  |     | 0                 | 报名人数    
+ reach_count  | INT(10)       | YES  |     | 0                 | 达标人数    
+ avg_amount   | DECIMAL(11,2) | YES  |     | 0.00              | 平均红包金额  
+ status       | CHAR(1)       | YES  |     | 0                 | 状态（0:开启报名、1:进行中、2:已结束）
+ create_time  | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time  | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+ del_flg      | CHAR(1)       | YES  |     | 0                 | 删除标志（0:未删除，1:删除）
+--------------+---------------+------+-----+-------------------+---------
+
+Table: game_info_city
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ city_id     | INT(10)       | YES  |     |                   | 城市Id    
+ city_name   | VARCHAR(25)   | YES  |     |                   | 城市名称    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ sum_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 总红包金额   
+ sum_count   | INT(10)       | YES  |     | 0                 | 报名人数    
+ reach_count | INT(10)       | YES  |     | 0                 | 达标人数    
+ avg_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 平均红包金额  
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+ del_flg     | CHAR(1)       | YES  |     | 0                 | 删除标志（0:未删除，1:删除）
+-------------+---------------+------+-----+-------------------+---------
+
+Table: game_info_country
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ sum_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 总红包金额   
+ sum_count   | INT(10)       | YES  |     | 0                 | 报名人数    
+ reach_count | INT(10)       | YES  |     | 0                 | 达标人数    
+ avg_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 平均红包金额  
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+ del_flg     | CHAR(1)       | YES  |     | 0                 | 删除标志（0:未删除，1:删除）
+-------------+---------------+------+-----+-------------------+---------
+
+Table: game_info_team
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 发起人Id   
+ team_name   | VARCHAR(125)  | YES  |     |                   | 团名      
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ start_time  | VARCHAR(25)   | YES  |     |                   | 开始时间    
+ end_time    | VARCHAR(25)   | YES  |     |                   | 结束时间    
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ team_count  | INT(10)       | YES  |     | 3                 | 最多参赛人数  
+ sum_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 总红包金额   
+ sum_count   | INT(10)       | YES  |     | 0                 | 报名人数    
+ reach_count | INT(10)       | YES  |     | 0                 | 达标人数    
+ avg_amount  | DECIMAL(11,2) | YES  |     | 0.00              | 平均红包金额  
+ status      | CHAR(1)       | YES  |     | 0                 | 状态（0:开启报名、1:进行中、2:已结束）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+ del_flg     | CHAR(1)       | YES  |     | 0                 | 删除标志（0:未删除，1:删除）
+-------------+---------------+------+-----+-------------------+---------
+
+Table: group_game_order
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ game_id     | INT(10)       | NO   |     |                   | 挑战Id    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ title       | VARCHAR(50)   | YES  |     |                   | 标题      
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 2                 | 挑战状态（0:未达标、1:已达标、2:未同步）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: group_game_order_city
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ city_id     | INT(10)       | NO   |     |                   | 城市Id    
+ city_name   | VARCHAR(50)   | YES  |     |                   | 城市名称    
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 0                 | 挑战状态（0:未达标、1:已达标）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: group_game_order_country
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 0                 | 挑战状态（0:未达标、1:已达标）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: group_game_order_team
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ team_id     | INT(10)       | NO   |     |                   | 团Id（group_game_info_team.id）
+ team_name   | VARCHAR(50)   | YES  |     |                   | 团名称     
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 0                 | 挑战状态（0:未达标、1:已达标）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: sys_account
+---------------------+---------------+------+-----+-------------------+---------
+ Field               | Type          | Null | Key | Default           | Remarks 
+---------------------+---------------+------+-----+-------------------+---------
+ id                  | INT(10)       | NO   | PRI |                   | 自增id    
+ balance             | DECIMAL(11,2) | YES  |     | 0.00              | 总余额     
+ usable_balance      | DECIMAL(11,2) | YES  |     | 0.00              | 可用余额    
+ frozen_balance      | DECIMAL(11,2) | YES  |     | 0.00              | 冻结余额    
+ sum_pay_count       | INT(10)       | YES  |     | 0                 | 支付次数（参赛次数）
+ sum_pay_amount      | DECIMAL(11,2) | YES  |     | 0.00              | 支付总额（参赛总额）
+ sum_income_count    | INT(10)       | YES  |     | 0                 | 收入次数（达标次数）
+ sum_income_amount   | DECIMAL(11,2) | YES  |     | 0.00              | 收入总额（达标总额）
+ sum_withdraw_count  | INT(10)       | YES  |     | 0                 | 提现次数    
+ sum_withdraw_amount | DECIMAL(11,2) | YES  |     | 0.00              | 提现金额    
+ create_time         | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time         | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+---------------------+---------------+------+-----+-------------------+---------
+
+Table: user_account
+-----------------------+---------------+------+-----+-------------------+---------
+ Field                 | Type          | Null | Key | Default           | Remarks 
+-----------------------+---------------+------+-----+-------------------+---------
+ id                    | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id               | INT(10)       | NO   |     |                   | 用户Id    
+ from_user_id          | INT(10)       | NO   |     |                   | 来自用户Id  
+ usable_balance        | DECIMAL(11,2) | YES  |     | 0.00              | 可用余额    
+ frozen_balance        | DECIMAL(11,2) | YES  |     | 0.00              | 冻结余额    
+ sum_pay_count         | INT(10)       | YES  |     | 0                 | 支付次数（参赛次数）
+ sum_pay_amount        | DECIMAL(11,2) | YES  |     | 0.00              | 支付总额（参赛总额）
+ pay_country_count     | INT(10)       | YES  |     | 0                 | 全国赛支付次数（参赛次数）
+ pay_country_amount    | DECIMAL(11,2) | YES  |     | 0.00              | 全国赛支付总额（参赛总额）
+ pay_city_count        | INT(10)       | YES  |     | 0                 | 城市赛支付次数（参赛次数）
+ pay_city_amount       | DECIMAL(11,2) | YES  |     | 0.00              | 城市赛支付总额（参赛总额）
+ pay_team_count        | INT(10)       | YES  |     | 0                 | 团队赛支付次数（参赛次数）
+ pay_team_amount       | DECIMAL(11,2) | YES  |     | 0.00              | 团队赛支付总额（参赛总额）
+ sum_income_count      | INT(10)       | YES  |     | 0                 | 收入次数（达标次数）
+ sum_income_amount     | DECIMAL(11,2) | YES  |     | 0.00              | 收入总额（达标总额）
+ income_country_count  | INT(10)       | YES  |     | 0                 | 全国赛收入次数（达标次数）
+ income_country_amount | DECIMAL(11,2) | YES  |     | 0.00              | 全国赛收入总额（达标总额）
+ income_city_count     | INT(10)       | YES  |     | 0                 | 城市赛收入次数（达标次数）
+ income_city_amount    | DECIMAL(11,2) | YES  |     | 0.00              | 城市赛收入总额（达标总额）
+ income_team_count     | INT(10)       | YES  |     | 0                 | 团队赛收入次数（达标次数）
+ income_team_amount    | DECIMAL(11,2) | YES  |     | 0.00              | 团队赛收入总额（达标总额）
+ sum_withdraw_count    | INT(10)       | YES  |     | 0                 | 提现次数    
+ sum_withdraw_amount   | DECIMAL(11,2) | YES  |     | 0.00              | 提现金额    
+ create_time           | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time           | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-----------------------+---------------+------+-----+-------------------+---------
+
+Table: user_account_stream
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 金额      
+ io_type     | CHAR(1)       | YES  |     | 0                 | 类型（0:支出，1:收入，2:提现）
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ game_type   | CHAR(1)       | YES  |     | 0                 | 支付类型（0:全国，1:城市，2:团队）
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ city_name   | VARCHAR(25)   | YES  |     |                   | 城市名称    
+ title       | VARCHAR(125)  | YES  |     |                   | 标题      
+ order_id    | VARCHAR(25)   | YES  |     |                   | 订单Id    
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: user_game_order
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ game_id     | INT(10)       | NO   |     |                   | 挑战Id    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ title       | VARCHAR(50)   | YES  |     |                   | 标题      
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 2                 | 挑战状态（0:未达标、1:已达标、2:未同步）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: user_game_order_city
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ city_id     | INT(10)       | NO   |     |                   | 城市Id    
+ city_name   | VARCHAR(50)   | YES  |     |                   | 城市名称    
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 2                 | 挑战状态（0:未达标、1:已达标、2:未同步）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: user_game_order_country
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 2                 | 挑战状态（0:未达标、1:已达标、2:未同步）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: user_game_order_team
+-------------+---------------+------+-----+-------------------+---------
+ Field       | Type          | Null | Key | Default           | Remarks 
+-------------+---------------+------+-----+-------------------+---------
+ id          | INT(10)       | NO   | PRI |                   | 自增id    
+ user_id     | INT(10)       | NO   |     |                   | 用户Id    
+ nick_name   | VARCHAR(50)   | YES  |     |                   | 昵称      
+ icon_url    | VARCHAR(125)  | YES  |     |                   | 头像地址    
+ phase_no    | VARCHAR(25)   | NO   |     |                   | 挑战期号    
+ team_id     | INT(10)       | NO   |     |                   | 团Id（group_game_info_team.id）
+ team_name   | VARCHAR(50)   | YES  |     |                   | 团名称     
+ group_no    | VARCHAR(25)   | NO   |     |                   | 小组期号    
+ order_id    | VARCHAR(64)   | NO   |     |                   | 挑战订单Id  
+ entry_fee   | DECIMAL(11,2) | YES  |     | 0.00              | 报名费     
+ pay_type    | CHAR(1)       | YES  |     | 0                 | 支付类型（0:余额，1:微信，2:支付宝）
+ pay_status  | CHAR(1)       | YES  |     | 0                 | 支付状态（0:未支付，1:已支付）
+ pay_time    | VARCHAR(64)   | YES  |     |                   | 支付时间    
+ trade_no    | VARCHAR(64)   | YES  |     |                   | 交易流水号   
+ walk_step   | INT(10)       | YES  |     | 0                 | 步数      
+ reach_step  | INT(10)       | YES  |     |                   | 达标步数    
+ amount      | DECIMAL(11,2) | YES  |     | 0.00              | 红包金额    
+ status      | CHAR(1)       | YES  |     | 2                 | 挑战状态（0:未达标、1:已达标、2:未同步）
+ create_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time | DATETIME(19)  | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+-------------+---------------+------+-----+-------------------+---------
+
+Table: user_info
+------------------+--------------+------+-----+-------------------+---------
+ Field            | Type         | Null | Key | Default           | Remarks 
+------------------+--------------+------+-----+-------------------+---------
+ user_id          | INT(10)      | NO   | PRI |                   | 用户Id    
+ wx_open_id       | VARCHAR(125) | NO   |     |                   | 微信唯一识别号 
+ wx_auth_status   | CHAR(1)      | YES  |     | 0                 | 微信授权信息（0:未授权，1:已授权）
+ wx_follow_status | CHAR(1)      | YES  |     | 0                 | 微信公众号关注状态（0:未关注，1:已关注）
+ nick_name        | VARCHAR(50)  | YES  |     |                   | 昵称      
+ sex              | INT(10)      | YES  |     | 0                 | 性别      
+ icon_url         | VARCHAR(125) | YES  |     |                   | 头像地址    
+ mobile           | VARCHAR(11)  | YES  |     |                   | 手机号     
+ enroll_count     | INT(10)      | YES  |     | 0                 | 报名数量    
+ share_count      | INT(10)      | YES  |     | 0                 | 已分享获取的报名数量
+ max_share_count  | INT(10)      | YES  |     | 0                 | 分享能够获取的最大报名数量
+ max_enroll_count | INT(10)      | YES  |     | 1                 | 最大报名数量（share_count+关联用户enroll_count）
+ from_user_id     | INT(10)      | YES  |     |                   | 推荐人     
+ last_login_time  | DATETIME(19) | YES  |     | CURRENT_TIMESTAMP | 最近登陆时间  
+ create_time      | DATETIME(19) | YES  |     | CURRENT_TIMESTAMP | 创建时间    
+ update_time      | DATETIME(19) | YES  |     | CURRENT_TIMESTAMP | 更新时间    
+ del_flg          | CHAR(50)     | YES  |     | 0                 | 是否已冻结（0:正常，1:已冻结）
+------------------+--------------+------+-----+-------------------+---------
+

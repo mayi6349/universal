@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 静态SQL处理 -->
+<sql-statement namespace="static">
+	
+	<!--获取进行中列表 -->
+	<sql id="selectGameOngoing">
+		SELECT
+			`id`,
+			`icon_url`,
+			`titile`,
+			`phase_no`,
+			`entry_fee`,
+			`reach_step`,
+			`entry_amount`,
+			`entry_count`,
+			`reach_count`,
+			`avg_amount`
+		FROM
+			`game_info`
+		WHERE
+			phase_no =?
+		ORDER BY
+			entry_amount DESC,
+			avg_amount DESC
+	<sql>
+	<!--获取报名中列表 -->
+	<sql id="selectGameEnrolling">
+		SELECT
+			`id`,
+			`icon_url`,
+			`titile`,
+			`phase_no`,
+			`entry_fee`,
+			`reach_step`,
+			`entry_amount`,
+			`entry_count`
+		FROM
+			`game_info`
+		WHERE
+			phase_no =?
+		ORDER BY
+			entry_amount DESC
+	<sql>
+	<!--获取已结束列表 -->
+	<sql id="selectGameHistory">
+		SELECT
+			`id`,
+			`icon_url`,
+			`titile`,
+			`phase_no`,
+			`entry_amount`,
+			`entry_count`,
+			`reach_count`,
+			`avg_amount`
+		FROM
+			`game_info`
+		WHERE
+			phase_no =?
+		ORDER BY
+			entry_amount DESC,
+			avg_amount DESC
+	<sql>
+	
+	<!--获取用户进行中列表主键 -->
+	<sql id="selectUserGameOngoing">
+		SELECT
+			`id`,
+			`icon_url`,
+			`titile`,
+			`phase_no`,
+			`entry_fee`,
+			`reach_step`,
+			`entry_amount`,
+			`entry_count`
+		FROM
+			`game_info`
+		WHERE
+			phase_no =?
+		AND id in (?)
+		ORDER BY
+			entry_amount DESC,
+			avg_amount DESC
+	<sql>
+
+
+
+
+	<!--获取城市赛列表 -->
+	<sql id="selectCityGameByUserId">
+		SELECT
+			`t1`.`id`,
+			`t1`.`city_id`,
+			`t1`.`city_name`,
+			`t1`.`phase_no`,
+			`t1`.`title`,
+			`t1`.`start_time`,
+			`t1`.`end_time`,
+			`t1`.`entry_fee`,
+			`t1`.`reach_step`,
+			`t1`.`sum_amount`,
+			`t1`.`sum_count`,
+			`t1`.`reach_count`,
+			`t1`.`avg_amount`,
+			`t1`.`status`,
+			`t2`.`id` AS user_game_id
+		FROM
+			game_info_city t1
+		LEFT JOIN user_game_order_city t2 ON t2.user_id =?
+		AND t1.city_id = t2.city_id
+		AND t1.phase_no = t2.phase_no
+		WHERE
+			t1.phase_no =?
+		ORDER BY t1.sum_amount desc
+	</sql>
+	
+	<!--获取团赛列表 -->
+	<sql id="selectTeamGameByUserId">
+		SELECT
+			`t1`.`id`,
+			`t1`.`phase_no`,
+			`t1`.`title`,
+			`t1`.`start_time`,
+			`t1`.`end_time`,
+			`t1`.`entry_fee`,
+			`t1`.`reach_step`,
+			`t1`.`sum_amount`,
+			`t1`.`sum_count`,
+			`t1`.`reach_count`,
+			`t1`.`avg_amount`,
+			`t1`.`status`,
+			`t2`.`id` AS user_game_id
+		FROM
+			game_info_team t1
+		LEFT JOIN user_game_order_team t2 ON t2.user_id =?
+		AND t1.id = t2.team_id
+		AND t1.phase_no = t2.phase_no
+		WHERE
+			t1.phase_no =?
+		ORDER BY t1.sum_amount desc
+	</sql>
+	
+	<!--建表 -->
+	<sql id="game_info_team">
+		CREATE TABLE `game_info_team` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		  `user_id` int(11) NOT NULL COMMENT '发起人Id',
+		  `phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		  `start_time` varchar(25) DEFAULT NULL COMMENT '开始时间',
+		  `end_time` varchar(25) DEFAULT NULL COMMENT '结束时间',
+		  `entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		  `reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		  `team_count` int(3) DEFAULT '3' COMMENT '最多参赛人数',
+		  `sum_amount` decimal(11,2) DEFAULT '0.00' COMMENT '总红包金额',
+		  `sum_count` int(11) DEFAULT '0' COMMENT '报名人数',
+		  `reach_count` int(11) DEFAULT '0' COMMENT '达标人数',
+		  `avg_amount` decimal(11,2) DEFAULT '0.00' COMMENT '平均红包金额',
+		  `status` char(1) DEFAULT '0' COMMENT '状态（0:开启报名、1:进行中、2:已结束）',
+		  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+		  `del_flg` char(1) DEFAULT '0' COMMENT '删除标志（0:未删除，1:删除）',
+		  PRIMARY KEY (`id`),
+		  KEY `phaseNo` (`phase_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队赛信息表(根据phase_no分表)';
+	</sql>
+	
+	<sql id="user_account_stream">
+		CREATE TABLE `user_account_stream` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		  `user_id` int(11) NOT NULL COMMENT '用户Id',
+		  `phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		  `game_type` char(1) DEFAULT '0' COMMENT '支付类型（0:全国，1:城市，2:团队）',
+		  `name` varchar(25) DEFAULT NULL COMMENT '名称',
+		  `io_type` char(1) DEFAULT '0' COMMENT '类型（0:支出，1:收入，2:提现）',
+		  `amount` decimal(11,2) DEFAULT '0.00' COMMENT '金额',
+		  `pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		  `order_id` varchar(25) DEFAULT '' COMMENT '订单Id',
+		  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+		  PRIMARY KEY (`id`),
+		  KEY `userId` (`user_id`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户账户流水表(根据user_id分表)';
+	</sql>
+	
+	<sql id="group_game_order_country">
+		CREATE TABLE `group_game_order_country` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '0' COMMENT '挑战状态（0:未达标、1:已达标）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `pgNo` (`phase_no`,`group_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='全国赛参赛信息表(根据phase_no+group_no分表)';
+	</sql>
+	<sql id="user_game_order_country">
+		CREATE TABLE `user_game_order_country` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '2' COMMENT '挑战状态（0:未达标、1:已达标、2:未同步）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `upNo` (`user_id`,`phase_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='全国赛参赛信息表(根据user_id分表)';
+	</sql>
+	
+	<sql id="group_game_order_city">
+		CREATE TABLE `group_game_order_city` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`city_id` int(11) NOT NULL COMMENT '城市Id',
+		`city_name` varchar(50) DEFAULT NULL COMMENT '城市名称',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '0' COMMENT '挑战状态（0:未达标、1:已达标）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `pcgNo` (`phase_no`,`city_id`,`group_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='城市赛参赛信息表(根据phase_no+city_id+group_no分表)';
+	</sql>
+	<sql id="user_game_order_city">
+		CREATE TABLE `user_game_order_city` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`city_id` int(11) NOT NULL COMMENT '城市Id',
+		`city_name` varchar(50) DEFAULT NULL COMMENT '城市名称',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '2' COMMENT '挑战状态（0:未达标、1:已达标、2:未同步）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `upNo` (`user_id`,`phase_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='城市赛参赛信息表(根据user_id分表)';
+	</sql>
+	
+	<sql id="group_game_order_team">
+		CREATE TABLE `group_game_order_team` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`team_id` int(11) NOT NULL COMMENT '团Id（group_game_info_team.id）',
+		`team_name` varchar(50) DEFAULT NULL COMMENT '团名称',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '0' COMMENT '挑战状态（0:未达标、1:已达标）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `utpNo` (`phase_no`,`team_id`,`group_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队赛参赛信息表(根据phase_no+team_id+group_no分表)';
+	</sql>
+	<sql id="user_game_order_team">
+		CREATE TABLE `user_game_order_team` (
+		`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+		`user_id` int(11) NOT NULL COMMENT '用户Id',
+		`nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+		`icon_url` varchar(125) DEFAULT NULL COMMENT '头像地址',
+		`phase_no` varchar(25) NOT NULL DEFAULT '' COMMENT '挑战期号',
+		`team_id` int(11) NOT NULL COMMENT '团Id（group_game_info_team.id）',
+		`team_name` varchar(50) DEFAULT NULL COMMENT '团名称',
+		`group_no` varchar(25) NOT NULL DEFAULT '' COMMENT '小组期号',
+		`order_id` varchar(64) NOT NULL DEFAULT '' COMMENT '挑战订单Id',
+		`entry_fee` decimal(11,2) DEFAULT '0.00' COMMENT '报名费',
+		`pay_type` char(1) DEFAULT '0' COMMENT '支付类型（0:余额，1:微信，2:支付宝）',
+		`pay_status` char(1) DEFAULT '0' COMMENT '支付状态（0:未支付，1:已支付）',
+		`pay_time` varchar(64) DEFAULT '' COMMENT '支付时间',
+		`trade_no` varchar(64) DEFAULT '' COMMENT '交易流水号',
+		`walk_step` int(11) DEFAULT '0' COMMENT '步数',
+		`reach_step` int(11) DEFAULT NULL COMMENT '达标步数',
+		`amount` decimal(11,2) DEFAULT '0.00' COMMENT '红包金额',
+		`status` char(1) DEFAULT '2' COMMENT '挑战状态（0:未达标、1:已达标、2:未同步）',
+		`create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+		`update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE
+		CURRENT_TIMESTAMP COMMENT '更新时间',
+		PRIMARY KEY (`id`),
+		KEY `upNo` (`user_id`,`phase_no`) USING BTREE
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队赛参赛信息表(根据user_id分表)';
+	</sql>
+
+</sql-statement>

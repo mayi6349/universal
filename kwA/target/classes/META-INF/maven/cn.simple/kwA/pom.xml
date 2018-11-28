@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.simple</groupId>
+		<artifactId>universal</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>kwA</artifactId>
+	<name>kwA</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.8.5.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901-1.jdbc4</version>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<finalName>wkA</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- Idea 添加此插件以便启动jetty -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.11.v20160721</version>
+				<configuration>
+					<httpConnector>
+						<port>8081</port><!-- 启动端口号 -->
+					</httpConnector>
+					<stopPort>9966</stopPort>
+					<stopKey>stop</stopKey>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+					<!-- 适应测试阶段的jetty，日志写入目录，tomcat写入tomcat/logs下 -->
+					<systemProperties>
+						<systemProperty>
+							<name>catalina.base</name>
+							<value>.</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${project.basedir}/lib</directory>
+							<targetPath>WEB-INF/lib</targetPath>
+							<filtering>false</filtering>
+							<includes>
+								<include>**/*.jar</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+				<version>2.1.1</version>
+			</plugin>
+		</plugins>
+
+	</build>
+</project>

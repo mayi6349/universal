@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql-statement namespace="dynamics">
+
+	<!-- 获取msg信息 -->
+	<sql id="selectMsgList">
+		<![CDATA[ 
+		select
+			message_id, 
+			title,
+			content
+		from ip_message_info
+		where del_flg = 0 and push_status = 1
+	  	<% if(!isEmpty(userId)) { %>
+	  		and user_id = #userId#
+	   	<% } %>
+	  	<% if(!isEmpty(type)) { %>
+	  		and type = #type#
+	   	<% } %>
+	  	<% if(!isEmpty(readTime)) { %>
+	  		and UNIX_TIMESTAMP(update_time) >= #readTime#
+	   	<% } %>
+	  	<% if(isEmpty(type)) { %>
+	  		and type = 3 or (type = 1 and UNIX_TIMESTAMP(update_time) >= #readTime# and del_flg = 0 and push_status = 1)
+	   	<% } %>
+	   	]]>
+	</sql>
+	<sql id="selectRentLotList">
+	<![CDATA[
+		SELECT
+			t1.lot_id,
+			t1.is_online_door,
+			t1. NAME,
+			t1.address,
+			t1.distance,
+			t1.lat,
+			t1.lng,
+			t1.uid,
+			t1.type,
+			t1.map_status
+		FROM
+			(
+				SELECT
+					lot_id,
+					is_online_door,
+					NAME,
+					address,
+					type,
+					search_status,
+					lat,
+					lng,
+					uid,
+					map_status,
+					is_rent,
+					ROUND(
+						GETDISTANCE (
+							IFNULL(lng, 0),
+							IFNULL(lat, 0),
+							<% if(!isEmpty(lng)) { %>
+	  		                  #lng#
+	                 	     <% } %>
+							  , 
+							<% if(!isEmpty(lat)) { %>
+	  		                  #lat#
+	                 	     <% } %>
+						),
+						1
+					) AS distance
+				FROM
+					ip_pk_lot
+				WHERE
+					del_flg = 0
+				AND STATUS = 1
+				AND is_rent = 1
+			) AS t1
+		<% if(!isEmpty(keyWord)) { %>
+		WHERE
+			t1. NAME LIKE '#keyword#'
+	   	<% } %>	
+		ORDER BY
+			distance ASC
+		]]>
+	</sql>
+	<!-- 获取固定车位租用记录 -->
+	<sql id="selectFixedRentSpace">
+		<![CDATA[ 
+		SELECT
+			space_rent_id,
+			space_floor,
+			space_no
+		FROM
+			ip_pk_space_rent
+		WHERE
+		<% if(!isEmpty(lotId)) { %>
+	  		 lot_id = #lotId# AND
+	   	<% } %>
+		 space_type = 0
+		AND space_status = 0
+		AND del_flg = 0
+		AND NOW() > start_time
+		<% if(!isEmpty(spaceFloor)) { %>
+	  		AND space_floor ='#spaceFloor#'
+	   	<% } %>
+		ORDER BY 
+		<% if(!isEmpty(priceASC)) { %>
+	  		space_price_month ASC,
+	   	<% } %>
+	   	<% if(!isEmpty(priceDESC)) { %>
+	  		space_price_month DESC,
+	   	<% } %>
+		space_rent_id DESC
+	   	]]>
+	</sql>
+</sql-statement>
