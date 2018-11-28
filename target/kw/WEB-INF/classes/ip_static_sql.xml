@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 静态SQL处理 -->
+<sql-statement namespace="static">
+
+	<!--获取首页比赛信息 -->
+	<sql id="selectGameInfoById">
+		SELECT
+		game_id,
+		user_id,
+		nick_name,
+		icon_url,
+		title,
+		phase_no,
+		start_time,
+		end_time,
+		entry_fee,
+		reach_step,
+		entry_count,
+		entry_amount,
+		reach_count,
+		IFNULL(TRUNCATE(entry_amount/reach_count,2),entry_amount) as avg_amount
+		FROM
+		game_info
+		WHERE
+		game_id =?
+		AND is_open=0
+	</sql>
+
+	<!--获取首页比赛信息 -->
+	<sql id="selectUserGameOrderByGameId">
+		SELECT
+		phase_no,
+		game_id,
+		group_no,
+		walk_step,
+		amount,
+		status
+		FROM
+		game_order
+		WHERE
+		user_id =?
+		AND game_id =?
+		AND pay_status = 1
+	</sql>
+
+	<!--获取比赛信息 -->
+	<sql id="selectUserGameOrderById">
+		SELECT
+		phase_no,
+		game_id,
+		group_no,
+		walk_step,
+		amount,
+		status
+		FROM
+		game_order
+		WHERE
+		id =?
+		AND user_id =?
+	</sql>
+</sql-statement>
