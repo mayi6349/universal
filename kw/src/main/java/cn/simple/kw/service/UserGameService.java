@@ -216,13 +216,17 @@ public class UserGameService {
 							"select count(0) from game_order where phase_no=? and game_id=? and group_no=? and status=1",
 							phaseNo, gameId, groupNo);
 					BigDecimal total = gameOrder.getEntryFee().multiply(new BigDecimal(groupCount));
-					BigDecimal amount = total.divide(new BigDecimal(reachCount + 1), 2, BigDecimal.ROUND_HALF_DOWN);
+					reachCount = reachCount + 1;
+					if (reachCount >= groupCount) {
+						reachCount = groupCount;
+					}
+					BigDecimal amount = total.divide(new BigDecimal(reachCount), 2, BigDecimal.ROUND_HALF_DOWN);
 
 					if ("0".equals(gameOrder.getStatus()) && step >= gameOrder.getReachStep()) {
 						// 达标人数+1
 						Db.update(
 								"update game_info set reach_count=?,avg_amount=IFNULL(TRUNCATE(entry_amount/reach_count,2),entry_amount) where game_id=? and reach_count < entry_count",
-								reachCount + 1, gameId);
+								reachCount , gameId);
 
 						Db.update(
 								"update game_order set amount=? where phase_no=? and game_id=? and group_no=? and pay_status='1'",
